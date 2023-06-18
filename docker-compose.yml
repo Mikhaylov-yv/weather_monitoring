@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  producer:
+    build: ./integration
+    container_name: weather_get_weather_py
+    image: get_weather_py
+    volumes:
+      - ./integration:/app
+    hostname: producer
+    entrypoint: python producing.py
+    networks:
+      - weather_monitoring
+  
+  broker:
+    image: rabbitmq:3.9.29-management
+    container_name: weather_rabbitmq
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=mikhaylov_yv
+      - RABBITMQ_DEFAULT_PASS=87457
+    # volumes:
+    #   - ./rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - weather_monitoring
+
+  save_history:
+    build: ./save_history
+    container_name: save_history_py
+    image: save_history_py
+    volumes:
+      - ./save_history:/app
+    hostname: save_history_py
+    entrypoint: python receive.py
+    networks:
+      - weather_monitoring
+
+  db:
+    build: ./db
+    image: weather_db
+    hostname: db
+    environment:
+      - POSTGRES_USER=mikhaylov_yv
+      - POSTGRES_DB=weather
+      - POSTGRES_PASSWORD=87457
+    networks:
+      - weather_monitoring
+
+networks:
+  weather_monitoring:

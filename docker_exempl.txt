@@ -1,0 +1,6 @@
+docker run -it --rm \
+	-v /mnt/c/Users/mikhaylo_yv/PycharmProjects/weather_monitoring/save_history:/app \
+	--network weather_monitoring_weather_monitoring \
+	save_history_py bash
+
+docker exec weather_monitoring-db-1 psql weather mikhaylov_yv -c "SELECT * FROM weather"
