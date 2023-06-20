@@ -21,15 +21,12 @@ def main(cur):
         data = json.loads(body)
         print(" [x] Received %r" % data, flush=True)
         tm = datetime.utcfromtimestamp(data['dt']).strftime('%Y-%m-%d %H:%M:%S')
-        temp = data['main']['temp']
-        pressure = data['main']['pressure']
-        humidity = data['main']['humidity']
-        wind = data['wind']
-        cur.execute("INSERT INTO weather (time, temp, pressure, humidity, wind) VALUES (%s, %s, %s, %s, %s, %s)",
-...         (tm, temp, pressure, humidity, wind))
+        place = data['place']
+        weather = json.dumps(data)
+        print((tm, place, weather,), flush=True)
+        cur.execute("INSERT INTO weather (time, place, weather) VALUES (%s, %s, %s)", (tm, place, weather,))
         conn.commit()
         
-
 
     channel.basic_consume(queue='weather', on_message_callback=callback, auto_ack=True)
 

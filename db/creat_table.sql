@@ -1,9 +1,7 @@
 CREATE TABLE weather (
   time TIMESTAMPTZ NOT NULL,
-  temp real,
-  pressure real,
-  humidity real,
-  wind jsonb
+  place text,
+  weather jsonb
 );
 
 SELECT create_hypertable(

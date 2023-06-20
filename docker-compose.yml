@@ -16,6 +16,7 @@ services:
     image: rabbitmq:3.9.29-management
     container_name: weather_rabbitmq
     hostname: rabbitmq
+    restart: always
     environment:
       - RABBITMQ_DEFAULT_USER=mikhaylov_yv
       - RABBITMQ_DEFAULT_PASS=87457
@@ -42,6 +43,7 @@ services:
     build: ./db
     image: weather_db
     hostname: db
+    restart: always
     environment:
       - POSTGRES_USER=mikhaylov_yv
       - POSTGRES_DB=weather
